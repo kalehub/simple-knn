@@ -7,6 +7,8 @@ def main():
     DATA_UJI_DIR = 'data-uji.csv'
     k_value = 3
     knn = KNN(DATASET_DIR,DATA_UJI_DIR,k_value)
+    result = knn.get_predict_result()
+    print(f'result prediction : {result}')
 
 
 if __name__ == '__main__':

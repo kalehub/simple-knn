@@ -11,7 +11,7 @@ class KNN():
         self.data = self.read_dataset(self.ddir)
         self.data = self.cleaning_dataset(self.data)
         self.all_euclidean = self.get_euclidean(self.data, self.uji, self.__k__)
-
+        self.predict_result = self.init_predict(self.all_euclidean, self.__k__)
 
     def read_dataset(self,ddir):
         ''' methods to read data to numpy array '''
@@ -31,20 +31,26 @@ class KNN():
         ''' methods to calculate euclidean distance'''
         uji_atr = uji[0,:-1]
         data_without_label = data[:,:-1]
-        print(data_without_label)
         uji_repeat = np.tile(uji_atr, data_without_label.shape[0]).reshape((data_without_label.shape[0],data_without_label.shape[1]))
-        print(uji_repeat)
         _euclidean = np.sqrt(np.sum(np.square(abs(data_without_label-uji_repeat)), axis=1))
-        print(_euclidean)
+        _euclidean = np.array([_euclidean]).reshape((data_without_label.shape[0], 1))
+        _sorted = np.argsort(_euclidean,kind='quicksort', axis=0)
+        _euclidean = np.concatenate((_euclidean, _sorted),axis=1)
+        all_euclidean = np.concatenate((data, _euclidean),axis=1)
+        return all_euclidean
+
+        # select value that less than equal to k
         
-
+    def init_predict(self, all_, k):
+        ''' initiating prediction ''' 
+        nearest_value = all_[np.where(all_[:,-2]<=k)]
+        # returning frequent value
+        get_column = nearest_value[:,-3].astype(int)
+        return np.bincount(get_column).argmax()
         
-            
-
-        
-            
-            
-
-
-
-
+    def get_predict_result(self):
+        ''' returning prediction result '''
+        if self.predict_result == 1:
+            return 'good'
+        else:
+            return 'bad'
