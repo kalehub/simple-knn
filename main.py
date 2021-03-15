@@ -1,3 +1,4 @@
+# learning source https://www.ketutrare.com/2018/11/algoritma-k-nearest-neighbor-dan-contoh-soal.html
 import numpy as np
 from knn import KNN
 
